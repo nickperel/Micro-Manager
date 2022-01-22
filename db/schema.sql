@@ -4,7 +4,7 @@ CREATE DATABASE micro_db;
 USE micro_db;
 
 CREATE TABLE department (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY ,
     name VARCHAR(30)
 );
 
