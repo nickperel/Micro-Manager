@@ -23,19 +23,31 @@ const mainPrompt = () => {
 .then((answers) => {
     switch(answers.action){
         case 'view all departments':
-           viewAllDepartments(); 
-           break;
+            viewDepartments(); 
+            break;
         case 'view all roles':
-            console.log('view all roles');
+            viewRoles();
+            break;
+        case 'view all employees':
+            viewEmployees();
             break;
         case 'add a department':
             addDepartment();
+            break;
+        case 'add a role':
+            addRole();
+            break;
+        case 'add an employee':
+            addEmployee();
+            break;
+        case 'update an employee role':
+            updateRole();
             break;
         };
     });
 };
 
-const viewAllDepartments = () => {
+const viewDepartments = () => {
     connection.promise().query('SELECT * FROM department')
     .then(([rows]) => {
         console.table(rows);
