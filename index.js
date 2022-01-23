@@ -20,8 +20,8 @@ const mainPrompt = () => {
     message: 'What would you like to do?',
     choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
 })
-.then((answer) => {
-    switch(answer.action){
+.then((answers) => {
+    switch(answers.action){
         case 'view all departments':
            viewAllDepartments(); 
            break;
@@ -31,9 +31,9 @@ const mainPrompt = () => {
         case 'add a department':
             addDepartment();
             break;
-    };
-});
-}
+        };
+    });
+};
 
 const viewAllDepartments = () => {
     connection.promise().query('SELECT * FROM department')
@@ -50,21 +50,21 @@ const addDepartment = () => {
 
     // inquirer prompt
 
-    // connection.query(`INSERT INTO department (name) VALUES (${answer.name})`, (err, result) => {
+    // connection.query(`INSERT INTO department (name) VALUES (${answers.name})`, (err, result) => {
     //     console.table(result)
     // })
     inquirer.prompt([{
         type: 'input',
         name: 'id',
-        message: 'What is the id of dept?'
+        message: 'What is the id of this department?'
     }, {
         type: 'input',
         name: 'name',
-        message: 'What is the name of dept?'
+        message: 'What is the name of this department?'
     }])
-    .then((answer) => {
-        console.log(answer)
-        connection.query(`INSERT INTO department (id,name) VALUES (?,?)`, answer, (err, result) => {
+    .then((answers) => {
+        console.log(answers)
+        connection.query(`INSERT INTO department (id, name) VALUES ?`, [answers], (err, result) => {
             if (err) throw err;
             console.table(result)
         })
