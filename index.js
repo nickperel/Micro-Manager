@@ -86,31 +86,140 @@ const viewEmployees = () => {
     });
 } 
 
-const addDepartment = () => {
-
+function addDepartment() {
     // inquirer prompt
-
-    // connection.query(`INSERT INTO department (name) VALUES (${answers.name})`, (err, result) => {
-    //     console.table(result)
-    // })
-    inquirer.prompt([{
-        type: 'input',
-        name: 'id',
-        message: 'What is the id of this department?'
-    }, {
+    return inquirer.prompt([{
         type: 'input',
         name: 'name',
         message: 'What is the name of this department?'
-    }])
-    .then((answers) => {
-        console.log(answers)
-        connection.query(`INSERT INTO department (id, name) VALUES ?`, [answers], (err, result) => {
-            if (err) throw err;
-            console.table(result)
-        })
-    })
+    }
+])
+.then(res => {
+    console.log(res);
+    const sql = 'INSERT INTO department SET ?';
 
-    
-}
+    connection.query(sql, res, function(err, result) {
+        if (err) throw err;
+        console.log('Successfully added department!')
+        mainPrompt();
+     });
+});
+};
+
+function addRole() {
+    // inquirer prompt
+    return inquirer.prompt([{
+        type: 'input',
+        name: 'title',
+        message: 'What is the name of this role?'
+    },
+    {
+        type: 'input',
+        name: 'salary',
+        message: 'What is the salary for this role?'
+    },
+    {
+        type: 'list',
+        name: 'department',
+        message: 'What department does this role belong to?',
+        choices: ['Sales', 'Legal', 'Engineering', 'Finance']
+    }
+])
+.then(res => {
+    console.log(res);
+
+    const deptIds = [
+        {
+            name: 'sales',
+            id: 1
+        },
+        {
+            name: 'legal',
+            id: 2
+        },
+        {
+            name: 'engineering',
+            id: 3
+        },
+        {
+            name: 'finance',
+            id: 4
+        }
+]
+
+    const deptObj = deptIds.find(d => d.name.toLowerCase() == res.department.toLowerCase())
+
+    res.department_id = deptObj.id;
+    delete res.department;
+
+    res.salary = parseFloat(res.salary);
+
+    const sql = 'INSERT INTO role SET ?';
+
+    connection.query(sql, res, function(err, result) {
+        if (err) throw err;
+        console.log('Successfully added role!')
+        mainPrompt();
+     });
+});
+};
+
+function addEmployee() {
+    // inquirer prompt
+    return inquirer.prompt([{
+        type: 'input',
+        name: 'first_name',
+        message: 'What is the first name of this employee?'
+    },
+    {
+        type: 'input',
+        name: 'last_name',
+        message: 'What is the last name of this employee?'
+    },
+    {
+        type: 'list',
+        name: 'job_title',
+        message: 'What is the role of this employee?',
+        choices: ['Sales', 'Legal', 'Engineering', 'Finance']
+    }
+])
+.then(res => {
+    console.log(res);
+
+    const deptIds = [
+        {
+            name: 'sales',
+            id: 1
+        },
+        {
+            name: 'legal',
+            id: 2
+        },
+        {
+            name: 'engineering',
+            id: 3
+        },
+        {
+            name: 'finance',
+            id: 4
+        }
+]
+
+    const deptObj = deptIds.find(d => d.name.toLowerCase() == res.department.toLowerCase())
+
+    res.department_id = deptObj.id;
+    delete res.department;
+
+    res.salary = parseFloat(res.salary);
+
+    const sql = 'INSERT INTO role SET ?';
+
+    connection.query(sql, res, function(err, result) {
+        if (err) throw err;
+        console.log('Successfully added role!')
+        mainPrompt();
+     });
+});
+};
 
 mainPrompt();
