@@ -244,7 +244,7 @@ const managerObj = managerIds.find(m => m.name.toLowerCase() == res.manager_id.t
     const sql = 'INSERT INTO employee SET ?';
     connection.query(sql, res, function(err, result) {
         if (err) throw err;
-        console.log('Successfully added role!')
+        console.log('Successfully added employee!')
         mainPrompt();
      });
 });
@@ -264,7 +264,7 @@ const updateRole = (roleId, employeeId) => {
             const sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
             connection.query(sql, [roleId, employeeId], (err, result) => {
                 if (err) return console.log({ error: err.message });
-                console.log(`Employee's role was successfully updated!`)
+                console.log(`Successfully updated employee's role!`)
                 mainPrompt();
                 return;
             });
