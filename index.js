@@ -30,6 +30,7 @@ const mainPrompt = () => {
             break;
         case 'view all employees':
             viewEmployees();
+            // mainPrompt();
             break;
         case 'add a department':
             addDepartment();
@@ -84,7 +85,7 @@ const viewEmployees = () => {
         console.table(res);
         mainPrompt();
     });
-} 
+}
 
 function addDepartment() {
     // inquirer prompt
@@ -178,42 +179,69 @@ function addEmployee() {
     },
     {
         type: 'list',
-        name: 'job_title',
+        name: 'role',
         message: 'What is the role of this employee?',
-        choices: ['Sales', 'Legal', 'Engineering', 'Finance']
+        choices: ['Salesperson', 'Lawyer', 'Software Engineer', 'Accountant']
+    },
+    {
+        type: 'list',
+        name: 'manager_id',
+        message: 'What is the name of the manager for this employee?',
+        choices: ['Nick Perel', 'Matt Delacruz', 'Riley Harris', 'Amy Suchidolski']
     }
 ])
 .then(res => {
     console.log(res);
 
-    const deptIds = [
+    const roleIds = [
         {
-            name: 'sales',
-            id: 1
-        },
-        {
-            name: 'legal',
+            name: 'salesperson',
             id: 2
         },
         {
-            name: 'engineering',
-            id: 3
+            name: 'lawyer',
+            id: 4
         },
         {
-            name: 'finance',
-            id: 4
+            name: 'software engineer',
+            id: 6
+        },
+        {
+            name: 'accountant',
+            id: 8
         }
 ]
 
-    const deptObj = deptIds.find(d => d.name.toLowerCase() == res.department.toLowerCase())
+    const roleObj = roleIds.find(r => r.name.toLowerCase() == res.role.toLowerCase())
 
-    res.department_id = deptObj.id;
-    delete res.department;
+    res.role_id = roleObj.id;
+    delete res.role;
 
-    res.salary = parseFloat(res.salary);
+    const managerIds = [
+        {
+            name: 'Nick Perel',
+            id: 1
+        },
+        {
+            name: 'Matt Delacruz',
+            id: 2
+        },
+        {
+            name: 'Riley Harris',
+            id: 4
+        },
+        {
+            name: 'Amy Suchidolski',
+            id: 5
+        }
+]
 
-    const sql = 'INSERT INTO role SET ?';
+const managerObj = managerIds.find(m => m.name.toLowerCase() == res.manager_id.toLowerCase())
 
+    res.manager_id = managerObj.id;
+    delete res.manager;
+
+    const sql = 'INSERT INTO employee SET ?';
     connection.query(sql, res, function(err, result) {
         if (err) throw err;
         console.log('Successfully added role!')
@@ -221,5 +249,26 @@ function addEmployee() {
      });
 });
 };
+
+const updateRole = (roleId, employeeId) => {
+        // inquirer prompt
+        inquirer.prompt([{
+            type: 'list',
+            name: 'employee',
+            message: "Which employee's role would you like to update?",
+            choices: ['Nick Perel', 'Matt Delacruz', 'Young Rhyu', 'Riley Harris', 'Amy Suchidolski', 'Marley Cohen', 'Robert Witschger', 'Mike Carbone']
+        }
+        ])
+        .then(res => {
+            console.log(res);
+            const sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
+            connection.query(sql, [roleId, employeeId], (err, result) => {
+                if (err) return console.log({ error: err.message });
+                console.log(`Employee's role was successfully updated!`)
+                mainPrompt();
+                return;
+            });
+        });
+    };
 
 mainPrompt();

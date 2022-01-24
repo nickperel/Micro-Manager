@@ -16,13 +16,13 @@ VALUES
     ('Account Manager', 135000.00, 4),
     ('Accountant', 115000.00, 4);
 
-INSERT INTO employee (first_name, last_name, role_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES 
-    ('Nick', 'Perel', 5),
-    ('Matt', 'Delacruz', 1),
-    ('Young', 'Rhyu', 8),
-    ('Riley', 'Harris', 3),
-    ('Amy', 'Suchidolski', 7),
-    ('Marley', 'Cohen', 2),
-    ('Robert', 'Witschger', 4),
-    ('Mike', 'Carbone', 6);
+    ('Nick', 'Perel', 5, NULL),
+    ('Matt', 'Delacruz', 1, NULL),
+    ('Young', 'Rhyu', 8, 5),
+    ('Riley', 'Harris', 3, NULL),
+    ('Amy', 'Suchidolski', 7, NULL),
+    ('Marley', 'Cohen', 2, 2),
+    ('Robert', 'Witschger', 4, 4),
+    ('Mike', 'Carbone', 6, 1);
